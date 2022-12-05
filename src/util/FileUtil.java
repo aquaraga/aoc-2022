@@ -15,4 +15,22 @@ public class FileUtil {
         myReader.close();
         return data;
     }
+
+    public static List<List<Integer>> readListOfListOfIntegers(String filePath) throws Exception {
+        List<List<Integer>> allData = new ArrayList<>();
+        List<Integer> data = new ArrayList<>();
+        Scanner myReader = new Scanner(new File(filePath));
+        while (myReader.hasNextLine()) {
+            String nextLine = myReader.nextLine();
+            if (nextLine.trim().length() == 0) {
+                allData.add(data);
+                data = new ArrayList<>();
+                continue;
+            }
+            data.add(Integer.valueOf(nextLine));
+        }
+        allData.add(data);
+        myReader.close();
+        return allData;
+    }
 }
