@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7a52863c-4d38-483b-b789-38895eea2717" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/day04/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/day04/test.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/day05/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/day05/test.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -33,17 +33,18 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "/Users/aquaraga/projects/aoc-2022/src/day04"
+    "last_opened_file_path": "/Users/aquaraga/projects/aoc-2022/src/day05"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/day05" />
       <recent name="$PROJECT_DIR$/src/day04" />
       <recent name="$PROJECT_DIR$/src/day03" />
       <recent name="$PROJECT_DIR$/src" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.day04.Main">
+  <component name="RunManager" selected="Application.day05.Main">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="day01.Main" />
       <module name="aoc-2022" />
@@ -96,8 +97,22 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="day05.Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="day05.Main" />
+      <module name="aoc-2022" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="day05.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.day05.Main" />
         <item itemvalue="Application.day04.Main" />
         <item itemvalue="Application.day03.Main" />
         <item itemvalue="Application.day02.Main" />
