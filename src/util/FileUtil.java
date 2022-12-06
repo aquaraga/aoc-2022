@@ -33,4 +33,14 @@ public class FileUtil {
         myReader.close();
         return allData;
     }
+
+    public static List<String> readStrings(String filePath) throws Exception {
+        List<String> data = new ArrayList<>();
+        Scanner myReader = new Scanner(new File(filePath));
+        while (myReader.hasNextLine()) {
+            data.add(myReader.nextLine());
+        }
+        myReader.close();
+        return data;
+    }
 }
