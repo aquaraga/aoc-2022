@@ -1,12 +1,10 @@
 package day09;
 
 import util.FileUtil;
-
 import java.util.*;
-
+import java.util.function.Function;
 
 class Position {
-
     Position clonePosition() {
         return new Position(x, y);
     }
@@ -14,7 +12,6 @@ class Position {
     int y;
 
     public Position(int x, int y) {
-
         this.x = x;
         this.y = y;
     }
@@ -23,27 +20,26 @@ class Position {
     public int hashCode() {
         return Objects.hash(x, y);
     }
-
     public Position right() {
         return new Position(x + 1, y);
     }
-
     @Override
     public boolean equals(Object obj) {
         Position other = (Position) obj;
         return x == other.x && y == other.y;
     }
-
     public boolean isAdjacentTo(Position head) {
         return Math.abs(head.x - x) <= 1 && Math.abs(head.y - y) <= 1;
     }
-
     public Position moveCloserTo(Position head) {
         if (head.y == y) {
             return new Position(head.x > x?++x:--x, y);
         }
         if (head.x == x) {
             return new Position(x, head.y>y?++y:--y);
+        }
+        if (Math.abs(y - head.y) == 2 && Math.abs(x - head.x) == 2) {
+            return new Position(head.x > x?++x:--x, head.y>y?++y:--y);
         }
         if (Math.abs(y - head.y) == 2) {
             return new Position(head.x, head.y>y?++y:--y);
@@ -71,16 +67,13 @@ class Position {
     public Position down() {
         return new Position(x, --y);
     }
-
 }
 
 class Head {
 
     @Override
     public String toString() {
-        return "Head{" +
-                "allKnots=" + allKnots +
-                '}';
+        return "Head{" + "allKnots=" + allKnots + '}';
     }
 
     public Head(List<Position> newAllKnots) {
@@ -89,10 +82,6 @@ class Head {
 
     public Position lastKnot() {
         return allKnots.get(allKnots.size() - 1);
-    }
-
-    private Position headOfHead() {
-        return allKnots.get(0);
     }
 
     private List<Position> allKnots = new ArrayList<>();
@@ -105,119 +94,56 @@ class Head {
     }
 
     public Head right() {
-        List<Position> newAllKnots = new ArrayList<>();
-        newAllKnots.add(allKnots.get(0).right());
-        Position tempHead = newAllKnots.get(0);
-        for (int i = 1; i < allKnots.size(); i++) {
-            Position adjusted = Main.adjust(allKnots.get(i), tempHead);
-            newAllKnots.add(adjusted);
-            tempHead = adjusted;
-        }
-
-        return new Head(newAllKnots);
+        return moveHead(Position::right);
     }
 
     public Head up() {
-        List<Position> newAllKnots = new ArrayList<>();
-        newAllKnots.add(allKnots.get(0).up());
-        Position tempHead = newAllKnots.get(0);
-        for (int i = 1; i < allKnots.size(); i++) {
-            Position adjusted = Main.adjust(allKnots.get(i), tempHead);
-            newAllKnots.add(adjusted);
-            tempHead = adjusted;
-        }
-
-        return new Head(newAllKnots);
+        return moveHead(Position::up);
     }
 
     public Head left() {
+        return moveHead(Position::left);
+    }
+
+    private Head moveHead(Function<Position, Position> movementFunction) {
         List<Position> newAllKnots = new ArrayList<>();
-        newAllKnots.add(allKnots.get(0).left());
+        newAllKnots.add(movementFunction.apply(allKnots.get(0)));
         Position tempHead = newAllKnots.get(0);
         for (int i = 1; i < allKnots.size(); i++) {
             Position adjusted = Main.adjust(allKnots.get(i), tempHead);
             newAllKnots.add(adjusted);
             tempHead = adjusted;
         }
-
         return new Head(newAllKnots);
     }
 
     public Head down() {
-        List<Position> newAllKnots = new ArrayList<>();
-        newAllKnots.add(allKnots.get(0).down());
-        Position tempHead = newAllKnots.get(0);
-        for (int i = 1; i < allKnots.size(); i++) {
-            Position adjusted = Main.adjust(allKnots.get(i), tempHead);
-            newAllKnots.add(adjusted);
-            tempHead = adjusted;
-        }
-
-        return new Head(newAllKnots);
+        return moveHead(Position::down);
     }
 }
-
-
-
 public class Main {
     public static void main(String[] args) throws Exception {
         Set<Position> visited = new LinkedHashSet<>();
-        List<String> inputs = FileUtil.readStrings("src/day09/test-example.txt");
-//        Position start = new Position(0, 0);
-        Position tail;
+        List<String> inputs = FileUtil.readStrings("src/day09/test.txt");
+        Position tail = new Position(0, 0);
         Head head = new Head(9, new Position(0, 0));
-        tail = new Position(0, 0);
         visited.add(tail.clonePosition());
 
-        for (String s :
-                inputs) {
+        Map<String, Function<Head, Head>> headMovements = Map.of("R", Head::right,
+                "L", Head::left, "U", Head::up, "D", Head::down);
+
+        for (String s : inputs) {
             String[] splitted = s.split(" ");
             String dir = splitted[0];
             int moves = Integer.parseInt(splitted[1]);
-            if (dir.equalsIgnoreCase("R")) {
-                for (int i = 0; i < moves; i++) {
-                    head = head.right();
-                    tail = adjust(tail, head.lastKnot());
-                    visited.add(tail.clonePosition());
-                }
-                continue;
+            for (int i = 0; i < moves; i++) {
+                head = headMovements.get(dir).apply(head);
+                visited.add(head.lastKnot().clonePosition());
             }
-            if (dir.equalsIgnoreCase("U")) {
-                for (int i = 0; i < moves; i++) {
-                    head = head.up();
-                    tail = adjust(tail, head.lastKnot());
-                    visited.add(tail.clonePosition());
-                }
-                continue;
-
-            }
-            if (dir.equalsIgnoreCase("L")) {
-                for (int i = 0; i < moves; i++) {
-                    head = head.left();
-                    tail = adjust(tail, head.lastKnot());
-                    visited.add(tail.clonePosition());
-                }
-                continue;
-
-            }
-            if (dir.equalsIgnoreCase("D")) {
-                for (int i = 0; i < moves; i++) {
-                    head = head.down();
-                    tail = adjust(tail, head.lastKnot());
-                    visited.add(tail.clonePosition());
-                }
-            }
-
         }
         System.out.println(visited.size());
         System.out.println(head);
-
-
-        System.out.println(adjust(new Position(4,0), new Position(5, 1)));
-
-
-
-
+        System.out.println(adjust(new Position(0,0), new Position(2, 2)));
     }
 
     static Position adjust(Position tail, Position head) {
@@ -227,10 +153,6 @@ public class Main {
         if (tail.isAdjacentTo(head)) {
             return tail;
         }
-
         return tail.moveCloserTo(head);
     }
-
-
-
 }
