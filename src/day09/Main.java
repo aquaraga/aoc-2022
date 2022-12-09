@@ -47,7 +47,7 @@ class Position {
         if (Math.abs(x - head.x) == 2) {
             return new Position(head.x > x?++x:--x, head.y);
         }
-        System.out.println("Some issue!!");
+        System.out.println("Shouldn't be here!!");
         return this;
     }
 
@@ -93,19 +93,7 @@ class Head {
         }
     }
 
-    public Head right() {
-        return moveHead(Position::right);
-    }
-
-    public Head up() {
-        return moveHead(Position::up);
-    }
-
-    public Head left() {
-        return moveHead(Position::left);
-    }
-
-    private Head moveHead(Function<Position, Position> movementFunction) {
+    public Head moveHead(Function<Position, Position> movementFunction) {
         List<Position> newAllKnots = new ArrayList<>();
         newAllKnots.add(movementFunction.apply(allKnots.get(0)));
         Position tempHead = newAllKnots.get(0);
@@ -116,10 +104,6 @@ class Head {
         }
         return new Head(newAllKnots);
     }
-
-    public Head down() {
-        return moveHead(Position::down);
-    }
 }
 public class Main {
     public static void main(String[] args) throws Exception {
@@ -129,15 +113,15 @@ public class Main {
         Head head = new Head(9, new Position(0, 0));
         visited.add(tail.clonePosition());
 
-        Map<String, Function<Head, Head>> headMovements = Map.of("R", Head::right,
-                "L", Head::left, "U", Head::up, "D", Head::down);
+        Map<String, Function<Position, Position>> headMovements = Map.of("R", Position::right,
+                "L", Position::left, "U", Position::up, "D", Position::down);
 
         for (String s : inputs) {
             String[] splitted = s.split(" ");
             String dir = splitted[0];
             int moves = Integer.parseInt(splitted[1]);
             for (int i = 0; i < moves; i++) {
-                head = headMovements.get(dir).apply(head);
+                head = head.moveHead(headMovements.get(dir));
                 visited.add(head.lastKnot().clonePosition());
             }
         }
