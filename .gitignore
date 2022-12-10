@@ -4,6 +4,7 @@ out/
 !**/src/test/**/out/
 .idea/**
 *.iml
+.idea/workspace.xml
 
 ### Eclipse ###
 .apt_generated
@@ -31,4 +32,4 @@ bin/
 .DS_Store
 
 # AOC input files
-test*.txt
+src/**/test*.txt
