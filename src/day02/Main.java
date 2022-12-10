@@ -3,12 +3,13 @@ package day02;
 import util.FileUtil;
 
 import java.util.List;
-
-
+import java.util.Map;
 
 
 enum RPS {
     ROCK(1), PAPER(2), SCISSOR(3);
+
+    static Map<Integer, RPS> scoreMap = Map.of(ROCK.score, ROCK, PAPER.score, PAPER, SCISSOR.score, SCISSOR);
 
     private int score;
 
@@ -20,6 +21,7 @@ enum RPS {
         if (other.equals(this)) {
             return 0;
         }
+        int x = this.score % 3 - other.score % 3;
         if (this.equals(ROCK)) {
             return other.equals(SCISSOR) ? 1: -1;
         }
