@@ -2,7 +2,6 @@ package day11;
 
 import util.FileUtil;
 
-import java.math.BigInteger;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -76,9 +75,10 @@ public class Main {
 
         for (Monkey monkey :
                 monkeys) {
-            monkeyItems.put(monkey.num, new ArrayDeque<>(monkey.items.stream().map(Long::valueOf).collect(Collectors.toList())));
+            monkeyItems.put(monkey.num, new ArrayDeque<>(new ArrayList<>(monkey.items)));
         }
         for (int round = 1; round <= 10000 ; round++) {
+            long before = System.currentTimeMillis();
             for (Monkey monkey :
                     monkeys) {
 
@@ -87,7 +87,7 @@ public class Main {
                     long item = items.remove();
                     inspections[monkey.num]++;
                     long y = getWorryLevel(item, monkey.operation);
-                    y = y % superModulo;
+//                    y = y % superModulo;
 
                     if (y % monkey.test == 0) {
                         addItem(monkeyItems, monkey.trueThrow, y);
@@ -96,7 +96,8 @@ public class Main {
                     }
                 }
             }
-            System.out.println("End of round " + round);
+            long after = System.currentTimeMillis();
+            System.out.println("End of round " + round + ", time = " + (after - before)/1000);
 
         }
         System.out.println(Arrays.stream(inspections).boxed().collect(Collectors.toList()));
